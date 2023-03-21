@@ -1,1 +1,3 @@
-ACTIVATE(GREETINGS)
+VAR temperature = 32
+IF temperature > 24 AND temperature < 30 THEN PRINT("Turn On The AC")
+IF temperature > 15 THEN PRINT("Turn On The AC")
