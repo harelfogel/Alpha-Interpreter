@@ -24,6 +24,4 @@ def getFunctions():
         for document in cursor:
             file.write(document.get('rule') + "\n")
         file.close()
-
-
-client.close()
+    client.close()
