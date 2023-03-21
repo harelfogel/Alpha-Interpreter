@@ -1,7 +1,6 @@
-numpy=1.14
-pandas=1.4
-django=2.1 
-flask=2.0
-dnspython=2.3.0
-python-dotenv=1.0.0
-pymongo-4.3.3
+pandas~=1.4
+django~=2.1
+flask~=2.0
+dnspython~=2.3.0
+python-dotenv~=1.0.0
+pymongo~=4.3.3
