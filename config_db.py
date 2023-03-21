@@ -9,7 +9,6 @@ db = client["smart_byte_db"]
 collection = db["functions"]
 
 
-
 def getVars():
     varsCollection = db["sensor_values"]
     cursor = varsCollection.find()
