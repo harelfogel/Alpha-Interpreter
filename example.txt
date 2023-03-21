@@ -1,3 +1,2 @@
-VAR temperature = 32
-IF temperature > 24 AND temperature < 30 THEN PRINT("Turn On The AC")
-IF temperature > 15 THEN PRINT("Turn On The AC")
+VAR TEMP = 20
+IF TEMP>10 AND TEMP>25 THEN PRINT("HAREL!NOT GOOD")
