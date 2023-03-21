@@ -9,6 +9,7 @@ db = client["smart_byte_db"]
 collection = db["functions"]
 
 
+
 def getVars():
     varsCollection = db["sensor_values"]
     cursor = varsCollection.find()
@@ -23,3 +24,6 @@ def getFunctions():
         for document in cursor:
             file.write(document.get('rule') + "\n")
         file.close()
+
+
+client.close()
