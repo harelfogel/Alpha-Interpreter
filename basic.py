@@ -126,6 +126,7 @@ TT_ARROW			= 'ARROW'
 TT_NEWLINE		= 'NEWLINE'
 TT_EOF				= 'EOF'
 
+
 KEYWORDS = [
   'VAR',
   'AND',
@@ -144,6 +145,7 @@ KEYWORDS = [
   'RETURN',
   'CONTINUE',
   'BREAK',
+  'TURN'
 ]
 
 class Token:
@@ -366,7 +368,13 @@ class Lexer:
 #######################################
 # NODES
 #######################################
+class TurnNode:
+    def __init__(self, value_node):
+        self.value_node = value_node
 
+    def __repr__(self):
+        return f"(TURN {self.value_node})"
+      
 class NumberNode:
   def __init__(self, tok):
     self.tok = tok
@@ -451,6 +459,8 @@ class ForNode:
 
     self.pos_start = self.var_name_tok.pos_start
     self.pos_end = self.body_node.pos_end
+    
+    
 
 class WhileNode:
   def __init__(self, condition_node, body_node, should_return_null):
@@ -619,7 +629,7 @@ class Parser:
   def statement(self):
     res = ParseResult()
     pos_start = self.current_tok.pos_start.copy()
-
+    
     if self.current_tok.matches(TT_KEYWORD, 'RETURN'):
       res.register_advancement()
       self.advance()
@@ -638,6 +648,10 @@ class Parser:
       res.register_advancement()
       self.advance()
       return res.success(BreakNode(pos_start, self.current_tok.pos_start.copy()))
+    
+    # Use res.register() to call turn_statement()
+    turn_stmt = res.register(self.turn_statement())
+    if turn_stmt: return res.success(turn_stmt)
 
     expr = res.register(self.expr())
     if res.error:
@@ -1122,6 +1136,36 @@ class Parser:
     if res.error: return res
 
     return res.success(WhileNode(condition, body, False))
+  
+  def turn_statement(self):
+    res = ParseResult()
+
+    if self.current_tok.type != TT_KEYWORD or self.current_tok.value != 'TURN':
+        return None
+
+    res.register_advancement()
+    self.advance()
+
+    if self.current_tok.type != TT_IDENTIFIER:
+        return res.failure(InvalidSyntaxError(
+            self.current_tok.pos_start, self.current_tok.pos_end,
+            "Expected identifier after 'TURN'"
+        ))
+
+    var_name = self.current_tok
+    res.register_advancement()
+    self.advance()
+
+    if self.current_tok.type != TT_EOF:
+        return res.failure(InvalidSyntaxError(
+            self.current_tok.pos_start, self.current_tok.pos_end,
+            "Expected end of file after identifier"
+        ))
+
+    node = TurnNode(var_name)
+    return res.success(node)
+
+
 
   def func_def(self):
     res = ParseResult()
@@ -1703,6 +1747,19 @@ class BuiltInFunction(BaseFunction):
     result = collection.insert_one(doc)
     return RTResult().success(Number.null)
   execute_print.arg_names = ['value']
+  
+  
+  def execute_turn(self, value, exec_ctx):
+    value_str = str(value)
+    doc = {
+        "function": value_str,
+        "isActivated": False
+    }
+    result = collection.insert_one(doc)
+    return RTResult().success(Number.null)
+
+  execute_turn.arg_names = ['value']
+ 
     
 #     return RTResult().success(Number.null)
 #   execute_print.arg_names = ['value']
@@ -1942,6 +1999,12 @@ class Interpreter:
     return RTResult().success(
       Number(node.tok.value).set_context(context).set_pos(node.pos_start, node.pos_end)
     )
+    
+  def visit_TurnNode(self, node, context):
+    value = self.visit(node.value_node, context)
+    if value.is_error(): return value
+    return self.execute_turn(value, context)
+
 
   def visit_StringNode(self, node, context):
     return RTResult().success(
