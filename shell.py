@@ -1,10 +1,12 @@
 import basic
 import sys
 
-from config_db import get_vars, get_functions
+from config_db import Controller
 
-get_vars()
-get_functions()
+
+controller = Controller()
+controller.get_vars()
+controller.get_functions()
 
 if sys.argv[1]:
     result, error = basic.run('<stdin>', sys.argv[1])

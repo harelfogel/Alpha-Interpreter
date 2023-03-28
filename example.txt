@@ -2,4 +2,3 @@ VAR humidity=54.2
 VAR temperature=24.7
 VAR distance = 0.00004480
 IF temperature>10 THEN PRINT("turn on ac")
-IF temperature>18 THEN PRINT("turn on ac")
