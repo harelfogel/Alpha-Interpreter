@@ -7,9 +7,7 @@ from strings_with_arrows import *
 import string
 import os
 import math
-from config_db import collection
-
-
+from config_db import Controller
 
 #######################################
 # CONSTANTS
@@ -1700,23 +1698,13 @@ class BuiltInFunction(BaseFunction):
              "function": value,
              "isActivated":False
          }
+    controller = Controller()
+    collection = controller.get_collection()
     result = collection.insert_one(doc)
     return RTResult().success(Number.null)
   execute_print.arg_names = ['value']
-    
-#     return RTResult().success(Number.null)
-#   execute_print.arg_names = ['value']
 
-#     def execute_print(self, exec_ctx):
-#         value = str(exec_ctx.symbol_table.get('value'))
-#         doc = {
-#             "function": value,
-#             "isActivated":False
-#         }
-#         result = collection.insert_one(doc)
-#         return RTResult().success(Number.null)
-#   execute_print.arg_names = ['value']
-  
+
   def execute_print_ret(self, exec_ctx):
     return RTResult().success(String(str(exec_ctx.symbol_table.get('value'))))
   execute_print_ret.arg_names = ['value']
