@@ -1,10 +1,10 @@
 import basic
 import sys
 
-from config_db import getVars, getFunctions
+from config_db import get_vars, get_functions
 
-getVars()
-getFunctions()
+get_vars()
+get_functions()
 
 if sys.argv[1]:
     result, error = basic.run('<stdin>', sys.argv[1])

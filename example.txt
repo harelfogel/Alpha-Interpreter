@@ -1,2 +1,5 @@
-VAR TEMP = 20
-IF TEMP>12 AND TEMP>25 THEN PRINT("HAREL!NOT GOOD")
+VAR humidity=54.2
+VAR temperature=24.7
+VAR distance = 0.00004480
+IF temperature>10 THEN PRINT("turn on ac")
+IF temperature>18 THEN PRINT("turn on ac")
