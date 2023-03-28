@@ -33,7 +33,7 @@ class Controller:
 
     def check_if_need_to_write_action(self, rule):
         device_name = self.get_device_from_rule_string(rule).lower()
-        desired_state = self.get_state_from_rule_string(rule)
+        desired_state = self.get_state_from_rule_string(rule).lower()
         device = self.db["devices"].find_one({"name": device_name})
         if desired_state != device.get('state'):
             return True
