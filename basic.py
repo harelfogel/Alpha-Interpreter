@@ -7,7 +7,7 @@ from strings_with_arrows import *
 import string
 import os
 import math
-from config_db import Controller
+from controller import Controller
 
 #######################################
 # CONSTANTS
