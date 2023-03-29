@@ -1,7 +1,7 @@
 import basic
 import sys
 
-from config_db import Controller
+from controller import Controller
 
 
 controller = Controller()
