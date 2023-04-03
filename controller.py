@@ -27,6 +27,8 @@ class Controller:
         rules = function_collection.find()
         with open("example.txt", 'a') as file:
             for rule in rules:
+                if not self.check_is_active(rule):
+                    continue
                 if self.check_if_need_to_write_action(rule.get('rule')):
                     file.write(rule.get('rule') + "\n")
             file.close()
@@ -51,3 +53,8 @@ class Controller:
         if match:
             result = match.group(0)
             return result
+
+    def check_is_active(self, rule):
+        if rule.get("isActive") == False:
+            return False
+        return True
