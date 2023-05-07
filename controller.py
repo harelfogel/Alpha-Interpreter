@@ -42,10 +42,12 @@ class Controller:
         return False
 
     def get_device_from_rule_string(self, rule):
-        start_index = rule.find('PRINT("') + len('PRINT("')
-        end_index = rule.find('")', start_index)
+        start_index = rule.find('TURN("') + len('TURN("')
+        end_index = rule.find(' ', start_index)
+        if end_index == -1:
+            end_index = rule.find('")', start_index)
         substring = rule[start_index:end_index]
-        return substring.split()[-1]
+        return substring
 
     def get_state_from_rule_string(self, rule):
         pattern = r"off|on"
